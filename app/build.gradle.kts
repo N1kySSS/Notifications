@@ -20,6 +20,10 @@ android {
     }
 
     buildTypes {
+        all {
+            buildConfigField("String", "BASE_URL", "")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -39,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
