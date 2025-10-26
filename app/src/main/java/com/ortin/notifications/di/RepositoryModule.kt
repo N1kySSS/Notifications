@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
     single { UserPreferences(get()) }
-    single<AuthorizationRepository> { AuthorizationRepositoryImpl(get()) }
+    single<AuthorizationRepository> { AuthorizationRepositoryImpl(get(), get()) }
 }
