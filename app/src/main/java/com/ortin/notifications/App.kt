@@ -1,6 +1,8 @@
 package com.ortin.notifications
 
 import android.app.Application
+import com.ortin.notifications.di.networkModule
+import com.ortin.notifications.di.repositoryModule
 import com.ortin.notifications.di.uiModule
 import com.ortin.notifications.di.useCaseModule
 import org.koin.android.ext.koin.androidContext
@@ -17,7 +19,9 @@ class App : Application() {
             androidContext(this@App)
             fragmentFactory()
             modules(
+                networkModule,
                 uiModule,
+                repositoryModule,
                 useCaseModule
             )
         }
