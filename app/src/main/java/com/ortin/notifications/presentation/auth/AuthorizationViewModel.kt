@@ -3,6 +3,7 @@ package com.ortin.notifications.presentation.auth
 import androidx.lifecycle.ViewModel
 import com.ortin.notifications.core.launchSafe
 import com.ortin.notifications.domain.usecase.LoginUseCase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,16 +30,20 @@ internal class AuthorizationViewModel(
         launchSafe(
             start = { _uiState.update { it.copy(loading = true) } },
             body = {
-                val result = loginUseCase(
-                    LoginUseCase.Params(
-                        id = _uiState.value.id,
-                        password = _uiState.value.password
-                    )
-                )
 
-                if (result.isNotEmpty()) {
-                    // TODO: save to store; navigate the main
-                }
+                // TODO: replace delay with the commented code when base url will appear
+                delay(2000)
+
+//                val result = loginUseCase(
+//                    LoginUseCase.Params(
+//                        id = _uiState.value.id,
+//                        password = _uiState.value.password
+//                    )
+//                )
+//
+//                if (result.isNotEmpty()) {
+//                    // TODO: save to store; navigate the main
+//                }
             },
             onError = { throwable -> _uiState.update { it.copy(errorText = throwable.message) } },
             final = { _uiState.update { it.copy(loading = false) } }
