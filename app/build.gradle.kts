@@ -22,7 +22,7 @@ android {
     buildTypes {
         all {
             // TODO: add base url value
-            buildConfigField("String", "BASE_URL", "")
+            buildConfigField("String", "BASE_URL", "\"\"")
         }
 
         release {
