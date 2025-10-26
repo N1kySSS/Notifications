@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Notifications</string>
+
+    <string name="login_screen_title">Вход в систему</string>
+    <string name="login_screen_id">Ваш идентификатор</string>
+    <string name="login_screen_password">Пароль</string>
+    <string name="login_screen_login_button">Войти</string>
 </resources>
