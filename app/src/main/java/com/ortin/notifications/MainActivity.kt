@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.content.ContextCompat
+import com.ortin.notifications.core.NotificationService
 import com.ortin.notifications.presentation.auth.AuthorizationViewModel
 import com.ortin.notifications.presentation.auth.LoginScreen
 import com.ortin.notifications.ui.components.popups.PopUpAskForPermission
@@ -18,6 +20,7 @@ import com.ortin.notifications.ui.theme.NotificationsTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+    private lateinit var notificationService: NotificationService
 
     private val loginViewModel: AuthorizationViewModel by viewModel()
 
@@ -25,15 +28,24 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            /* do nothing */
+            Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
+                .show()
         } else {
-            // TODO: popUp\toast - что пуши не будут работать
+            Toast.makeText(
+                this,
+                "FCM can't post notifications without POST_NOTIFICATIONS permission",
+                Toast.LENGTH_LONG,
+            ).show()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        notificationService = NotificationService()
+        notificationService.getFCMToken()
+
         setContent {
             val uiState by loginViewModel.uiState.collectAsState()
 

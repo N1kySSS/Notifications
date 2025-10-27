@@ -1,7 +1,6 @@
 package com.ortin.notifications.presentation.auth
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.ortin.notifications.core.launchSafe
 import com.ortin.notifications.domain.usecase.LoginUseCase
