@@ -50,13 +50,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val uiState by notificationsViewModel.uiState.collectAsState()
+
+            var first by remember { mutableStateOf(true) }
+
             NotificationsTheme {
                 MainScreen(
-                    items = uiState.notifications,
+                    items = if (first) { emptyList() } else { uiState.notifications },
                     isLoading = uiState.loading,
                     isRefreshing = uiState.isRefreshing,
                     errorText = uiState.errorText,
-                    onRefresh = notificationsViewModel::loadData,
+                    onRefresh = {
+                        notificationsViewModel.loadData()
+                        first = false
+                    },
                     onErrorDismiss = {}
                 )
             }
