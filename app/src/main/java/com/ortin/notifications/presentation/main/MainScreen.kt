@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material3.Text
 import androidx.compose.material3.Surface
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -48,64 +49,59 @@ internal fun MainScreen(
         onRefresh = onRefresh
     )
 
-    val scrollState = rememberScrollState()
+    val paddingModifier = Modifier
+        .statusBarsPadding()
+        .navigationBarsPadding()
 
-    Surface {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsPadding()
-        ) {
-            when {
-                isLoading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.Center)
-                    ) {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
+    Surface(modifier = modifier.fillMaxSize()) {
+        when {
+            isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .then(paddingModifier),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
+            }
 
-                items.isEmpty() -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.Center)
-                            .verticalScroll(scrollState)
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = dimensions.paddings.paddingM),
-                            text = stringResource(R.string.notifications_empty_list),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.labelLarge
-                        )
-                    }
-                }
-
-                else -> {
+            else -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .then(paddingModifier)
+                        .pullRefresh(state = pullRefreshState)
+                ) {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(dimensions.paddings.paddingS),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         contentPadding = PaddingValues(dimensions.paddings.paddingM)
                     ) {
-                        items(
-                            items = items,
-                            key = { item -> item.id }
-                        ) { item ->
-                            NotificationCard(
-                                date = item.dateTime,
-                                title = item.title,
-                                description = item.description,
-                                isRead = item.isRead,
-                                onClick = item.onClick
-                            )
+                        if (items.isEmpty()) {
+                            item {
+                                Text(
+                                    text = stringResource(R.string.notifications_empty_list),
+                                    style = MaterialTheme.typography.labelLarge,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = dimensions.paddings.paddingM)
+                                )
+                            }
+                        } else {
+                            items(items, key = { it.id }) { item ->
+                                NotificationCard(
+                                    date = item.dateTime,
+                                    title = item.title,
+                                    description = item.description,
+                                    isRead = item.isRead,
+                                    onClick = item.onClick
+                                )
+                            }
                         }
                     }
 
@@ -116,14 +112,14 @@ internal fun MainScreen(
                             onDismiss = onErrorDismiss
                         )
                     }
+
+                    CustomPullRefreshIndicator(
+                        refreshing = isRefreshing,
+                        state = pullRefreshState,
+                        modifier = Modifier.align(Alignment.TopCenter)
+                    )
                 }
             }
-
-            CustomPullRefreshIndicator(
-                refreshing = isRefreshing,
-                state = pullRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
         }
     }
 }
