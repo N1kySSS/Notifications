@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.gms)
 }
 
@@ -20,6 +21,11 @@ android {
     }
 
     buildTypes {
+        all {
+            // TODO: add base url value
+            buildConfigField("String", "BASE_URL", "\"\"")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -39,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -52,6 +59,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.material.icons)
+
+    implementation(libs.kotlinx.coroutines)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.json)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.koin)
+
+    implementation(libs.datastore)
 
     //Firebase
     implementation(platform(libs.firebase.bom))
