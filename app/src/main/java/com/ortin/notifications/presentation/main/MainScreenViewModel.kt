@@ -40,7 +40,11 @@ internal class MainScreenViewModel(
             },
             body = {
                 _uiState.update {
-                    it.copy(notifications = getNotificationsUseCase(Unit).toItems())
+                    it.copy(
+                        notifications = getNotificationsUseCase(Unit)
+                            .sortedByDescending { item -> item.dateTime }
+                            .toItems()
+                    )
                 }
             },
             onError = { throwable -> _uiState.update { it.copy(errorText = throwable.message) } },
