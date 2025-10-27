@@ -8,27 +8,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.compose.ui.tooling.preview.Preview
 import com.ortin.notifications.presentation.auth.AuthorizationViewModel
 import com.ortin.notifications.presentation.auth.LoginScreen
+import com.ortin.notifications.ui.components.popups.PopUpAskForPermission
 import com.ortin.notifications.ui.theme.NotificationsTheme
-import kotlinx.coroutines.delay
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.log
 
 class MainActivity : ComponentActivity() {
 
@@ -50,8 +37,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val uiState by loginViewModel.uiState.collectAsState()
 
+            askNotificationPermission()
             NotificationsTheme {
-
                 // TODO: replace with navigation in the future
                 LoginScreen(
                     login = uiState.id,
@@ -63,11 +50,20 @@ class MainActivity : ComponentActivity() {
                     onLoginClick = loginViewModel::login,
                     onErrorDismiss = {}
                 )
+                if (loginViewModel.isShowPopUp.value) {
+                    PopUpAskForPermission(
+                        onButtonClicked = {
+                            loginViewModel.isShowPopUp.value = false
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        },
+                        onDismissRequest = {
+                            loginViewModel.isShowPopUp.value = false
+                        }
+                    )
+                }
             }
         }
     }
-}
-
 
     private fun askNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -76,9 +72,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 /* do nothing */
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                /* TODO: popUp - что пуши не работют и спросиь: хочет ли он дать разрешения
-                *  если нажата кнопка да - делать запрос
-                *  если нажата кнопка нет или он закрыл popUp - ничего не делать */
+                loginViewModel.isShowPopUp.value = true
             } else {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
