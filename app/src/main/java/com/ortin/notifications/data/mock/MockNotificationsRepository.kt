@@ -5,7 +5,7 @@ import com.ortin.notifications.domain.repository.NotificationRepository
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
-internal class MockNotificationRepositor(private val count: Int = 15) : NotificationRepository {
+internal class MockNotificationRepository(private val count: Int = 15) : NotificationRepository {
     private val incidentPairs = listOf(
         "https://24.kg/files/media/387/387445.jpg" to "Наводнение",
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5IS5C3lzkZBiK8oOLN0J1PdezbzGvO7tm5A&s" to "Извержение вулкана",
@@ -56,7 +56,7 @@ internal class MockNotificationRepositor(private val count: Int = 15) : Notifica
         )
     }
 
-    override suspend fun getNotifications(id: String): List<Notification> {
+    override suspend fun getNotifications(): List<Notification> {
         delay(500)
         return List(count) { createNotification(it + 1) }
     }

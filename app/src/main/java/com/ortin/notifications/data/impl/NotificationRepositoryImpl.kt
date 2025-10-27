@@ -16,8 +16,10 @@ internal class NotificationRepositoryImpl(
     private val client: HttpClient,
     private val preferences: UserPreferences
 ) : NotificationRepository {
-    override suspend fun getNotifications(id: String): List<Notification> {
-        val userId = preferences.userId.first() ?: id
+    override suspend fun getNotifications(): List<Notification> {
+        val userId = preferences.userId.first()
+
+        if (userId.isNullOrEmpty()) { throw IllegalArgumentException("Сессия не действительна") }
 
         val response: NotificationResponse = client.get("pushes/me/") {
             headers {
