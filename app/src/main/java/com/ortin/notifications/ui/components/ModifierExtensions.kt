@@ -2,6 +2,7 @@ package com.ortin.notifications.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.material3.ripple
 import androidx.compose.ui.Modifier
 
 internal fun Modifier.noRippleClickable(
@@ -12,6 +13,19 @@ internal fun Modifier.noRippleClickable(
     Modifier.clickable(
         interactionSource = interactionSource,
         indication = null,
+        enabled = enabled,
+        onClick = onClick
+    )
+)
+
+internal fun Modifier.niceRippleClickable(
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = MutableInteractionSource(),
+    onClick: () -> Unit
+): Modifier = this.then(
+    Modifier.clickable(
+        interactionSource = interactionSource,
+        indication = ripple(bounded = true),
         enabled = enabled,
         onClick = onClick
     )
