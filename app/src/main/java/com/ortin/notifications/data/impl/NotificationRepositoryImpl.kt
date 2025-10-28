@@ -16,18 +16,21 @@ internal class NotificationRepositoryImpl(
     private val client: HttpClient,
     private val preferences: UserPreferences
 ) : NotificationRepository {
-    override suspend fun getNotifications(): List<Notification> {
-        val userId = preferences.userId.first()
 
-        if (userId.isNullOrEmpty()) { throw IllegalArgumentException("Сессия не действительна") }
+    override suspend fun getNotifications(): Result<List<Notification>> {
+        return runCatching {
+            val userId = preferences.userId.first()
 
-        val response: NotificationResponse = client.get("pushes/me/") {
-            headers {
-                append("user_id", userId)
-                accept(ContentType.Application.Json)
-            }
-        }.body()
+            if (userId.isNullOrEmpty()) { throw IllegalArgumentException("Сессия не действительна") }
 
-        return response.items
+            val response: NotificationResponse = client.get("pushes/me/") {
+                headers {
+                    append("user_id", userId)
+                    accept(ContentType.Application.Json)
+                }
+            }.body()
+
+            response.items
+        }
     }
 }

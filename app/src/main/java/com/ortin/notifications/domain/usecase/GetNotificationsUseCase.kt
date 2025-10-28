@@ -6,8 +6,8 @@ import com.ortin.notifications.domain.repository.NotificationRepository
 
 internal class GetNotificationsUseCase(
     private val repository: NotificationRepository
-) : UseCase<Unit, List<Notification>>() {
-    override suspend fun execute(params: Unit): List<Notification> {
+) : UseCase<Unit, Result<List<Notification>>>() {
+    override suspend fun execute(params: Unit): Result<List<Notification>> {
         return repository.getNotifications()
     }
 }

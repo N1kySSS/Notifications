@@ -1,18 +1,23 @@
 package com.ortin.notifications.presentation.main
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ortin.notifications.core.launchSafe
 import com.ortin.notifications.core.toFormattedDateTime
 import com.ortin.notifications.data.models.Notification
 import com.ortin.notifications.domain.usecase.GetNotificationsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 internal class MainScreenViewModel(
     private val getNotificationsUseCase: GetNotificationsUseCase
 ) : ViewModel() {
+
     data class MainScreenState(
         val notifications: List<NotificationItem> = emptyList(),
         val loading: Boolean = false,
@@ -42,6 +47,7 @@ internal class MainScreenViewModel(
                 _uiState.update {
                     it.copy(
                         notifications = getNotificationsUseCase(Unit)
+                            .getOrThrow()
                             .sortedByDescending { item -> item.dateTime }
                             .toItems()
                     )
