@@ -25,18 +25,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.ortin.notifications.R
 import com.ortin.notifications.ui.theme.LocalDimensions
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun DetailScreen(modifier: Modifier = Modifier) {
+fun DetailScreen(
+    title: String,
+    description: String,
+    image: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val dimensions = LocalDimensions.current
     val scrollState = rememberScrollState()
-
-    val detailViewModel: DetailScreenViewModel = koinViewModel()
 
     Column(
         modifier = modifier
@@ -53,12 +55,12 @@ fun DetailScreen(modifier: Modifier = Modifier) {
         ) {
             IconButton(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(dimensions.other.detailedButtonMinHeight)
                     .align(Alignment.CenterStart),
                 onClick = { /* TODO - navigation on the history screen */ }
             ) {
                 Icon(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(dimensions.other.detailedIconSize),
                     imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = stringResource(R.string.detail_screen_go_back_icon),
                     tint = MaterialTheme.colorScheme.primary
@@ -66,14 +68,14 @@ fun DetailScreen(modifier: Modifier = Modifier) {
             }
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = detailViewModel.title.value,
+                text = title,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
             )
         }
         Text(
-            text = detailViewModel.description.value,
+            text = description,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Normal,
             color = MaterialTheme.colorScheme.secondary
@@ -82,7 +84,7 @@ fun DetailScreen(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .clip(RoundedCornerShape(dimensions.corners.cornerM))
                 .padding(vertical = dimensions.paddings.paddingS),
-            model = detailViewModel.image.value,
+            model = image,
             contentDescription = stringResource(R.string.detail_screen_image_description),
             error = painterResource(R.drawable.im_default),
             placeholder = painterResource(R.drawable.im_default),
@@ -91,9 +93,8 @@ fun DetailScreen(modifier: Modifier = Modifier) {
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(dimensions.other.componentMinMinHeight),
-            onClick = detailViewModel::reportAction,
-            enabled = true,
+                .height(dimensions.other.detailedButtonMinHeight),
+            onClick = onClick,
             shape = RoundedCornerShape(dimensions.corners.cornerM)
         ) {
             Text(
