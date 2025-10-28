@@ -68,6 +68,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.koin)
+    implementation(libs.koin.compose)
 
     implementation(libs.datastore)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }

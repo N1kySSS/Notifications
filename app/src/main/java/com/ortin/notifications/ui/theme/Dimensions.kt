@@ -33,5 +33,6 @@ internal data class CornerDimensions(
 )
 
 internal data class OtherDimensions(
+    val componentMinMinHeight: Dp = 40.dp,
     val componentMinHeight: Dp = 56.dp
 )
