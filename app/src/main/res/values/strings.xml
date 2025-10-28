@@ -12,4 +12,7 @@
         Готовы ли вы предоставить разрешения?
     </string>
     <string name="toast_about_permission">Нельзя получать уведомления без разрешения</string>
+    <string name="detail_screen_button">Меры приняты</string>
+    <string name="detail_screen_image_description">Картинка</string>
+    <string name="detail_screen_go_back_icon">Назад</string>
 </resources>

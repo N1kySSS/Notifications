@@ -1,6 +1,8 @@
 [versions]
 agp = "8.11.2"
 firebaseBom = "34.4.0"
+coilCompose = "3.3.0"
+coilNetworkOkhttp = "3.3.0"
 kotlin = "2.2.21"
 coreKtx = "1.17.0"
 lifecycleRuntimeKtx = "2.9.4"
@@ -21,6 +23,8 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 material-icons = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.7.8" }
@@ -34,6 +38,7 @@ ktor-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlin
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.9.0" }
 
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
 
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 

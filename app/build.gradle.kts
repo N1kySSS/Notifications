@@ -61,19 +61,28 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.material.icons)
 
+    //Coroutines
     implementation(libs.kotlinx.coroutines)
 
+    //Ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.json)
     implementation(libs.kotlinx.serialization.json)
 
+    //Koin
     implementation(libs.koin)
+    implementation(libs.koin.compose)
 
+    //DataStore
     implementation(libs.datastore)
 
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging)
+
+    //Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }
