@@ -32,8 +32,8 @@ import com.ortin.notifications.ui.theme.LocalDimensions
 @Composable
 fun DetailScreen(
     title: String,
-    description: String,
-    image: String,
+    description: String?,
+    image: String?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -74,22 +74,26 @@ fun DetailScreen(
                 color = MaterialTheme.colorScheme.primary
             )
         }
-        Text(
-            text = description,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Normal,
-            color = MaterialTheme.colorScheme.secondary
-        )
-        AsyncImage(
-            modifier = Modifier
-                .clip(RoundedCornerShape(dimensions.corners.cornerM))
-                .padding(vertical = dimensions.paddings.paddingS),
-            model = image,
-            contentDescription = stringResource(R.string.detail_screen_image_description),
-            error = painterResource(R.drawable.im_default),
-            placeholder = painterResource(R.drawable.im_default),
-            fallback = painterResource(R.drawable.im_default),
-        )
+        description?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Normal,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
+        image?.let {
+            AsyncImage(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(dimensions.corners.cornerM))
+                    .padding(vertical = dimensions.paddings.paddingS),
+                model = it,
+                contentDescription = stringResource(R.string.detail_screen_image_description),
+                error = painterResource(R.drawable.im_default),
+                placeholder = painterResource(R.drawable.im_default),
+                fallback = painterResource(R.drawable.im_default),
+            )
+        }
         Button(
             modifier = Modifier
                 .fillMaxWidth()
