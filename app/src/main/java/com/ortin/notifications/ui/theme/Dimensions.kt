@@ -10,7 +10,8 @@ internal data class Dimensions(
     val paddings: Paddings = Paddings(),
     val corners: CornerDimensions = CornerDimensions(),
     val iconDimensions: IconDimensions = IconDimensions(),
-    val other: OtherDimensions = OtherDimensions()
+    val other: OtherDimensions = OtherDimensions(),
+    val border: BorderDimensions = BorderDimensions()
 )
 
 internal data class Paddings(
@@ -33,5 +34,11 @@ internal data class CornerDimensions(
 )
 
 internal data class OtherDimensions(
+    val popUpButtonHeight: Dp = 40.dp,
+    val popUpHeight: Dp = 180.dp,
     val componentMinHeight: Dp = 56.dp
+)
+
+internal data class BorderDimensions(
+    val popupBorderWidth: Dp =  1.dp,
 )

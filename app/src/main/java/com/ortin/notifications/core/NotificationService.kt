@@ -3,15 +3,12 @@ package com.ortin.notifications.core
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.util.Log
-import androidx.annotation.RequiresPermission
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -24,8 +21,6 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-private const val TAG = "NotificationService"
-
 class NotificationService() : FirebaseMessagingService() {
     override fun onCreate() {
         super.onCreate()
@@ -34,8 +29,8 @@ class NotificationService() : FirebaseMessagingService() {
 
     private fun createNotificationChannel() {
         val notificationChannel = NotificationChannel(
-            Utils.CHANNEL_ID,
-            Utils.DESCRIPTION,
+            NotificationUtils.CHANNEL_ID,
+            NotificationUtils.DESCRIPTION,
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
             enableLights(true)
@@ -52,7 +47,7 @@ class NotificationService() : FirebaseMessagingService() {
             if (task.isSuccessful) {
                 continuation.resume(task.result)
             } else {
-                Log.e("FCM_TOKEN", "Ошибка при получении токена", task.exception)
+                Log.e(FCM_TOKEN_TAG, "Ошибка при получении токена", task.exception)
                 continuation.resume(null)
             }
         }
@@ -64,10 +59,10 @@ class NotificationService() : FirebaseMessagingService() {
             val token = tokenDeferred.await()
 
             token?.let {
-                Log.d("FCM_TOKEN", "Токен: $token")
+                Log.d(FCM_TOKEN_TAG, "Токен: $token")
                 onNewToken(token)
             } ?: run {
-                Log.e("FCM_TOKEN", "Не удалось получить токен, он пуст")
+                Log.e(FCM_TOKEN_TAG, "Не удалось получить токен, он пуст")
             }
         }
     }
@@ -105,7 +100,7 @@ class NotificationService() : FirebaseMessagingService() {
         )
 
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this, Utils.CHANNEL_ID)
+        val notificationBuilder = NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setColor(0xDB0F27)
             .setContentTitle(notification.title)
@@ -118,13 +113,18 @@ class NotificationService() : FirebaseMessagingService() {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
         val channel = NotificationChannel(
-            Utils.CHANNEL_ID,
-            Utils.DESCRIPTION,
+            NotificationUtils.CHANNEL_ID,
+            NotificationUtils.DESCRIPTION,
             NotificationManager.IMPORTANCE_HIGH,
         )
         notificationManager.createNotificationChannel(channel)
 
         val notificationId = 0
         notificationManager.notify(notificationId, notificationBuilder.build())
+    }
+
+    companion object {
+        private const val TAG = "NotificationService"
+        private const val FCM_TOKEN_TAG = "FCM_TOKEN"
     }
 }

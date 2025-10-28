@@ -35,17 +35,23 @@ import com.ortin.notifications.ui.theme.LocalDimensions
 @Composable
 fun PopUpAskForPermission(
     onButtonClicked: () -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val dimensions = LocalDimensions.current
+    val shape = RoundedCornerShape(dimensions.corners.cornerM)
+    val border = BorderStroke(
+        width = dimensions.border.popupBorderWidth,
+        color = MaterialTheme.colorScheme.primary
+    )
 
     BasicAlertDialog(
-        modifier = Modifier
-            .height(180.dp)
-            .clip(RoundedCornerShape(dimensions.corners.cornerM))
+        modifier = modifier
+            .height(dimensions.other.popUpHeight)
+            .clip(shape)
             .background(
                 color = Color.White,
-                shape = RoundedCornerShape(dimensions.corners.cornerM)
+                shape = shape
             ),
         onDismissRequest = { onDismissRequest() }
     ) {
@@ -64,17 +70,16 @@ fun PopUpAskForPermission(
                 color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center,
             )
+
             Spacer(modifier = Modifier.height(dimensions.paddings.paddingXS))
+
             Button(
                 modifier = Modifier
                     .padding(horizontal = dimensions.paddings.paddingM)
-                    .height(40.dp)
+                    .height(dimensions.other.popUpButtonHeight)
                     .fillMaxWidth(),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary
-                ),
-                shape = RoundedCornerShape(dimensions.corners.cornerM),
+                border = border,
+                shape = shape,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
@@ -87,22 +92,21 @@ fun PopUpAskForPermission(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
+
             Spacer(modifier = Modifier.height(dimensions.paddings.paddingXS))
+            
             Button(
                 modifier = Modifier
                     .padding(horizontal = dimensions.paddings.paddingM)
-                    .height(40.dp)
+                    .height(dimensions.other.popUpButtonHeight)
                     .fillMaxWidth(),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = ErrorColor
-                ),
-                shape = RoundedCornerShape(dimensions.corners.cornerM),
+                border = border,
+                shape = shape,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     disabledContainerColor = Color.Transparent,
                 ),
-                onClick = { onDismissRequest() }
+                onClick = onDismissRequest
             ) {
                 Text(
                     text = stringResource(R.string.pop_up_dismiss_button),

@@ -1,6 +1,6 @@
 package com.ortin.notifications.core
 
-object Utils {
+object NotificationUtils {
     const val CHANNEL_ID = "NotificationChannel"
     const val DESCRIPTION = "Important"
 }

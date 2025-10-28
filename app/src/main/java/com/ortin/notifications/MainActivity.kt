@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import com.ortin.notifications.core.NotificationService
 import com.ortin.notifications.presentation.auth.AuthorizationViewModel
@@ -28,15 +29,11 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Toast.makeText(
-                this,
-                "Разрешения на уведомления выданы",
-                Toast.LENGTH_SHORT
-            ).show()
+            /* do nothing */
         } else {
             Toast.makeText(
                 this,
-                "Нельзя получать уведомления без разрешения",
+                getString(R.string.toast_about_permission),
                 Toast.LENGTH_LONG,
             ).show()
         }
@@ -66,6 +63,7 @@ class MainActivity : ComponentActivity() {
                     onLoginClick = loginViewModel::login,
                     onErrorDismiss = {}
                 )
+
                 if (loginViewModel.isShowPopUp.value) {
                     PopUpAskForPermission(
                         onButtonClicked = {
