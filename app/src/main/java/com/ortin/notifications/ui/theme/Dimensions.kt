@@ -29,6 +29,7 @@ internal data class IconDimensions(
 
 internal data class CornerDimensions(
     val cornerM: Dp = 12.dp,
+    val cornerL: Dp = 16.dp,
     val cornerXL: Dp = 20.dp,
 )
 
