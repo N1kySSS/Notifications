@@ -5,4 +5,11 @@
     <string name="login_screen_id">Ваш идентификатор</string>
     <string name="login_screen_password">Пароль</string>
     <string name="login_screen_login_button">Войти</string>
+    <string name="pop_up_accept_button">Ок</string>
+    <string name="pop_up_dismiss_button">Отказаться</string>
+    <string name="pop_up_text">
+        Если вы не предоставите разрешение на использование уведомлений, то приложение не будет работать.
+        Готовы ли вы предоставить разрешения?
+    </string>
+    <string name="toast_about_permission">Нельзя получать уведомления без разрешения</string>
 </resources>

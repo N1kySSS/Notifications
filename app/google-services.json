@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "839957215769",
+    "project_id": "notifications-18cfb",
+    "storage_bucket": "notifications-18cfb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839957215769:android:a5edc6a9b1fb522a430888",
+        "android_client_info": {
+          "package_name": "com.ortin.notifications"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARh_VfdJsZX98bMNMQd66l2WHv3n6aeHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

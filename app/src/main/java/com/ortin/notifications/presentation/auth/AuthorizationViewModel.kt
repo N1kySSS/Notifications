@@ -1,5 +1,6 @@
 package com.ortin.notifications.presentation.auth
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.ortin.notifications.core.launchSafe
 import com.ortin.notifications.domain.usecase.LoginUseCase
@@ -21,6 +22,8 @@ internal class AuthorizationViewModel(
 
     private val _uiState = MutableStateFlow<AuthorizationState>(AuthorizationState())
     val uiState: StateFlow<AuthorizationState> = _uiState.asStateFlow()
+
+    val isShowPopUp = mutableStateOf(false)
 
     fun changeId(newValue: String) = _uiState.update { it.copy(id = newValue) }
 
