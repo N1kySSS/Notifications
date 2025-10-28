@@ -67,7 +67,7 @@ class NotificationService() : FirebaseMessagingService() {
                 Log.d("FCM_TOKEN", "Токен: $token")
                 onNewToken(token)
             } ?: run {
-                Log.e("FCM_TOKEN", "Не удалось получить токен")
+                Log.e("FCM_TOKEN", "Не удалось получить токен, он пуст")
             }
         }
     }

@@ -28,12 +28,15 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                this,
+                "Разрешения на уведомления выданы",
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             Toast.makeText(
                 this,
-                "FCM can't post notifications without POST_NOTIFICATIONS permission",
+                "Нельзя получать уведомления без разрешения",
                 Toast.LENGTH_LONG,
             ).show()
         }
@@ -50,6 +53,7 @@ class MainActivity : ComponentActivity() {
             val uiState by loginViewModel.uiState.collectAsState()
 
             askNotificationPermission()
+
             NotificationsTheme {
                 // TODO: replace with navigation in the future
                 LoginScreen(
