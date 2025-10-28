@@ -3,7 +3,9 @@ package com.ortin.notifications.core
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 fun ViewModel.launchSafe(
@@ -16,6 +18,11 @@ fun ViewModel.launchSafe(
         start?.invoke()
         body()
     } catch (error: Exception) {
+        if (!isActive && error is CancellationException) {
+            Log.w("LAUNCH_SAFE", "${error.message}")
+            throw error
+        }
+
         Log.e("LAUNCH_SAFE", "${error.message}")
         onError?.invoke(error)
     } finally {
