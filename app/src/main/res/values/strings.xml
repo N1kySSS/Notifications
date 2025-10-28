@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Notifications</string>
-
     <string name="login_screen_title">Вход в систему</string>
     <string name="login_screen_id">Ваш идентификатор</string>
     <string name="login_screen_password">Пароль</string>
@@ -15,4 +14,5 @@
     <string name="detail_screen_button">Меры приняты</string>
     <string name="detail_screen_image_description">Картинка</string>
     <string name="detail_screen_go_back_icon">Назад</string>
+    <string name="notifications_empty_list">Скоро тут появятся уведомления!</string>
 </resources>

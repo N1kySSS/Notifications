@@ -1,27 +1,26 @@
 package com.ortin.notifications
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import androidx.core.content.ContextCompat
-import com.ortin.notifications.core.NotificationService
-import com.ortin.notifications.presentation.auth.AuthorizationViewModel
-import com.ortin.notifications.presentation.auth.LoginScreen
-import com.ortin.notifications.ui.components.popups.PopUpAskForPermission
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.core.content.ContextCompat
+import com.ortin.notifications.core.NotificationService
+import com.ortin.notifications.presentation.auth.AuthorizationViewModel
 import com.ortin.notifications.presentation.detail.DetailScreen
 import com.ortin.notifications.presentation.detail.DetailScreenViewModel
+import com.ortin.notifications.ui.components.popups.PopUpAskForPermission
 import com.ortin.notifications.ui.theme.NotificationsTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -84,6 +83,17 @@ class MainActivity : ComponentActivity() {
                         onClick = detailsViewModel::reportAction,
                         modifier = Modifier.padding(paddingValues)
                     )
+                    if (loginViewModel.isShowPopUp.value) {
+                        PopUpAskForPermission(
+                            onButtonClicked = {
+                                loginViewModel.isShowPopUp.value = false
+                                openAppSettings()
+                            },
+                            onDismissRequest = {
+                                loginViewModel.isShowPopUp.value = false
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -95,11 +105,18 @@ class MainActivity : ComponentActivity() {
                 PackageManager.PERMISSION_GRANTED
             ) {
                 /* do nothing */
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+            } else  {
                 loginViewModel.isShowPopUp.value = true
-            } else {
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    fun openAppSettings() {
+        val packageName = packageName
+        val uri = Uri.fromParts("package", packageName, null)
+        val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS, uri)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }
