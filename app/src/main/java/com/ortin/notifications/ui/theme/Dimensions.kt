@@ -34,5 +34,7 @@ internal data class CornerDimensions(
 )
 
 internal data class OtherDimensions(
+    val detailedButtonMinHeight: Dp = 40.dp,
+    val detailedIconSize: Dp = 24.dp,
     val componentMinHeight: Dp = 56.dp
 )
